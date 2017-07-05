@@ -93,7 +93,7 @@ const dev = {
 const prod = {
   output: {
     path: dir.dist,
-    filename: `bundle.min.js`,
+    filename: 'bundle.min.js',
   },
   plugins: [
     new Clean(resolve(dir.dist, '**', '*'), { root: dir.dist }),

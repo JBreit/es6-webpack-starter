@@ -1,7 +1,7 @@
 {
   "title": "ECMAScript 2015 Webpack Starter Kit",
   "name": "es6-webpack-starter",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "ECMAScript 2015 Webpack Starter Kit",
   "main": "./src/index.js",
   "private": true,
