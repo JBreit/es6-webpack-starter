@@ -30,7 +30,7 @@ const base = {
   context: dir.src,
   entry: {
     app: 'index.js',
-    vendor: ['babel-polyfill']
+    vendor: ['babel-polyfill'],
   },
   resolve: {
     modules: [dir.src, 'node_modules'],
@@ -88,18 +88,17 @@ const base = {
   },
   plugins: [
     style,
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.min.js',
+      minChunks: 2,
+    }),
     new webpack.LoaderOptionsPlugin({
-      debug: false,
       options: {
         postcss: () => [autoprefixer(pkg.browserslist)],
       },
     }),
     new webpack.BannerPlugin(banner),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.js',
-      minChunks: 2,
-    }),
   ],
 };
 
@@ -120,7 +119,6 @@ const prod = {
   plugins: [
     new Clean(resolve(dir.dist, '**', '*'), { root: dir.dist }),
     new webpack.optimize.UglifyJsPlugin({
-      comments: false,
       mangle: {
         except: ['webpackJsonp'],
       },
