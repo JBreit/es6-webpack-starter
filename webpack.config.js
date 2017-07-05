@@ -41,12 +41,24 @@ const base = {
           },
         },
       },
+      // {
+      //   test: /\.css$/,
+      //   use: styleBundle.extract([
+      //     'css-loader',
+      //     'style-loader',
+      //   ]),
+      // },
       {
         test: /\.css$/,
-        use: styleBundle.extract([
-          'css-loader',
+        use: [
           'style-loader',
-        ]),
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+        ],
       },
       {
         test: /\.scss$/,

@@ -2,7 +2,7 @@
   "title": "ES6 Webpack Starter Kit",
   "name": "es6-webpack-starter",
   "version": "1.0.0",
-  "description": "ECMAScript 2015+ Node.js Experiments",
+  "description": "ECMAScript 2015 Webpack Starter Kit",
   "main": "./src/index.js",
   "private": true,
   "scripts": {
