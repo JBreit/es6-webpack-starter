@@ -1,3 +1,60 @@
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 16px;
+};
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
 body {
   background-color: #ddd;
+}
+
+h1, h2, h3, h4, h5, h6 {}
+
+a, a:active, a:hover, a:focus {
+  text-decoration: none;
+}
+
+[type=reset], [type=submit], button, html [type=button] {
+    appearance: button;
+}
+
+@media only screen {
+
+}
+
+@media only screen and (min-width: 40.063em) {
+
+}
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+
+}
+
+@media only screen and (min-width: 64.063em) {
+
+}
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+
+}
+
+@media only screen and (min-width: 90.063em) {
+
+}
+
+@media only screen and (min-width: 90.063em) and (max-width: 120em) {
+
+}
+
+@media only screen and (min-width: 120.063em) {
+
 }

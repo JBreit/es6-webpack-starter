@@ -16,6 +16,7 @@ const banner = `
 `;
 
 const dir = {
+  assets: resolve('assets'),
   dist: resolve('dist'),
   src: resolve('src'),
 };
@@ -28,7 +29,8 @@ const style = new ExtractText({
 const base = {
   context: dir.src,
   entry: {
-    app: 'index.js'
+    app: 'index.js',
+    vendor: ['babel-polyfill']
   },
   resolve: {
     modules: [dir.src, 'node_modules'],
@@ -51,17 +53,27 @@ const base = {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
+              modules: true,
             },
           }],
         }),
       },
-      {
+      /*{
         test: /\.scss$/,
         use: style.extract([
           'css-loader',
           'postcss-loader',
           'sass-loader',
         ]),
+      },*/
+      {
+        test: /\.(sass|scss)$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.html$/,
@@ -77,17 +89,27 @@ const base = {
   plugins: [
     style,
     new webpack.LoaderOptionsPlugin({
+      debug: false,
       options: {
         postcss: () => [autoprefixer(pkg.browserslist)],
       },
     }),
     new webpack.BannerPlugin(banner),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.js',
+      minChunks: 2,
+    }),
   ],
 };
 
 const dev = {
   devtool: 'eval-source-map',
-  plugins: [new Html({ template: resolve('index.html') })],
+  plugins: [
+    new Html({
+      template: resolve('index.html'),
+    }),
+  ],
 };
 
 const prod = {
@@ -98,7 +120,10 @@ const prod = {
   plugins: [
     new Clean(resolve(dir.dist, '**', '*'), { root: dir.dist }),
     new webpack.optimize.UglifyJsPlugin({
-      mangle: { except: ['webpackJsonp'] },
+      comments: false,
+      mangle: {
+        except: ['webpackJsonp'],
+      },
     }),
   ],
 };

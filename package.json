@@ -9,13 +9,13 @@
     "update-deps": "npm update",
     "prestart": "npm install",
     "start": "webpack-dev-server --env=dev --open",
-    "build:dev": "webpack --env=dev",
     "build": "webpack --env=prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "ES6",
     "EcmaScript 2015",
+    "Webpack",
     "Starter Kit"
   ],
   "repository": {
@@ -64,7 +64,6 @@
     "karma-junit-reporter": "^1.2.0",
     "mocha": "^3.4.0",
     "node-sass": "^4.5.2",
-    "nodemon": "^1.11.0",
     "postcss-loader": "^2.0.5",
     "protractor": "^5.1.2",
     "sass-loader": "^6.0.5",
