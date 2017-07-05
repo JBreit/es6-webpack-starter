@@ -20,7 +20,10 @@ const dir = {
   src: resolve('src'),
 };
 
-const styleBundle = new ExtractText(resolve(`assets/css/main.css`));
+const style = new ExtractText({
+  filename: 'bundle.css',
+  allChunks: true,
+});
 
 const base = {
   context: dir.src,
@@ -41,28 +44,20 @@ const base = {
           },
         },
       },
-      // {
-      //   test: /\.css$/,
-      //   use: styleBundle.extract([
-      //     'css-loader',
-      //     'style-loader',
-      //   ]),
-      // },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          {
+        use: style.extract({
+          use: [{
             loader: 'css-loader',
             options: {
-              modules: true,
+              importLoaders: 1,
             },
-          },
-        ],
+          }],
+        }),
       },
       {
         test: /\.scss$/,
-        use: styleBundle.extract([
+        use: style.extract([
           'css-loader',
           'postcss-loader',
           'sass-loader',
@@ -72,13 +67,15 @@ const base = {
         test: /\.html$/,
         use: {
           loader: 'html-loader',
-          options: { minimize: false },
+          options: {
+            minimize: false,
+          },
         },
       },
     ],
   },
   plugins: [
-    styleBundle,
+    style,
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: () => [autoprefixer(pkg.browserslist)],
