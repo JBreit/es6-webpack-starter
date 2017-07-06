@@ -16,9 +16,9 @@ const banner = `
 `;
 
 const dir = {
-  assets: resolve('assets'),
-  dist: resolve('dist'),
-  src: resolve('src'),
+  assets: resolve(__dirname, 'assets'),
+  dist: resolve(__dirname, 'dist'),
+  src: resolve(__dirname, 'src'),
 };
 
 const style = new ExtractText({
@@ -49,40 +49,37 @@ const base = {
       {
         test: /\.css$/,
         use: style.extract({
-          use: [{
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true,
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: true,
+              },
             },
-          }],
+          ],
         }),
       },
-      /*{
-        test: /\.scss$/,
+      {
+        test: /\.(sass|scss)$/,
         use: style.extract([
           'css-loader',
           'postcss-loader',
           'sass-loader',
         ]),
-      },*/
-      {
-        test: /\.(sass|scss)$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'postcss-loader',
-          'sass-loader',
-        ],
       },
       {
-        test: /\.html$/,
+        test: /\.(html|htm)$/,
         use: {
           loader: 'html-loader',
           options: {
             minimize: false,
           },
         },
+      },
+      {
+        test: /\.(ico|png|svg|jpeg|gif)$/i,
+        use: 'file-loader',
       },
     ],
   },
@@ -106,15 +103,17 @@ const dev = {
   devtool: 'eval-source-map',
   plugins: [
     new Html({
-      template: resolve('index.html'),
+      template: resolve(__dirname, 'index.html'),
     }),
   ],
 };
 
 const prod = {
+  devtool: 'source-map',
   output: {
     path: dir.dist,
     filename: 'bundle.min.js',
+    sourceMapFilename: 'bundle.map',
   },
   plugins: [
     new Clean(resolve(dir.dist, '**', '*'), { root: dir.dist }),
