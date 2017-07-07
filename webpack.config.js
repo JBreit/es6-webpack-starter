@@ -1,4 +1,4 @@
-const { resolve } = require('path');
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const Clean = require('clean-webpack-plugin');
@@ -16,9 +16,9 @@ const banner = `
 `;
 
 const dir = {
-  assets: resolve(__dirname, 'assets'),
-  dist: resolve(__dirname, 'dist'),
-  src: resolve(__dirname, 'src'),
+  assets: path.resolve(__dirname, 'assets'),
+  dist: path.resolve(__dirname, 'dist'),
+  src: path.resolve(__dirname, 'src'),
 };
 
 const style = new ExtractText({
@@ -30,7 +30,9 @@ const base = {
   context: dir.src,
   entry: {
     app: 'index.js',
-    vendor: ['babel-polyfill'],
+    vendor: [
+      'babel-polyfill',
+    ],
   },
   resolve: {
     modules: [dir.src, 'node_modules'],
@@ -79,7 +81,15 @@ const base = {
       },
       {
         test: /\.(ico|png|svg|jpeg|gif)$/i,
-        use: 'file-loader',
+        use: [
+          'file-loader',
+        ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'file-loader',
+        ],
       },
     ],
   },
@@ -103,7 +113,8 @@ const dev = {
   devtool: 'eval-source-map',
   plugins: [
     new Html({
-      template: resolve(__dirname, 'index.html'),
+      favicon: path.resolve(`${dir.assets}/img/favicon.ico`),
+      template: path.resolve(__dirname, 'index.html'),
     }),
   ],
 };
