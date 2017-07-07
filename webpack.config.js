@@ -127,7 +127,7 @@ const prod = {
     sourceMapFilename: 'bundle.map',
   },
   plugins: [
-    new Clean(resolve(dir.dist, '**', '*'), { root: dir.dist }),
+    new Clean(path.resolve(dir.dist, '**', '*'), { root: dir.dist }),
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
         except: ['webpackJsonp'],
