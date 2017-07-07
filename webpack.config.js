@@ -80,15 +80,11 @@ const base = {
       },
       {
         test: /\.(ico|png|svg|jpeg|gif)$/i,
-        use: [
-          'file-loader',
-        ],
+        use: ['file-loader'],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader',
-        ],
+        use: ['file-loader'],
       },
     ],
   },
