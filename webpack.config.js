@@ -30,11 +30,10 @@ const base = {
   context: dir.src,
   entry: {
     app: 'index.js',
-    vendor: [
-      'babel-polyfill',
-    ],
+    vendor: ['babel-polyfill'],
   },
   resolve: {
+    extensions: ['.js', '.json'],
     modules: [dir.src, 'node_modules'],
   },
   module: {
