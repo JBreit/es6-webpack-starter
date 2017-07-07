@@ -22,7 +22,7 @@ const dir = {
 };
 
 const style = new ExtractText({
-  filename: 'bundle.css',
+  filename: '[name].bundle.css',
   allChunks: true,
 });
 
@@ -92,7 +92,7 @@ const base = {
     style,
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.min.js',
+      filename: '[name].bundle.min.js',
       minChunks: 2,
     }),
     new webpack.LoaderOptionsPlugin({
@@ -118,8 +118,8 @@ const prod = {
   devtool: 'source-map',
   output: {
     path: dir.dist,
-    filename: 'bundle.min.js',
-    sourceMapFilename: 'bundle.map',
+    filename: '[name].bundle.min.js',
+    sourceMapFilename: '[name].bundle.map',
   },
   plugins: [
     new Clean(path.resolve(dir.dist, '**', '*'), { root: dir.dist }),
