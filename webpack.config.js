@@ -38,13 +38,14 @@ const style = new ExtractText({
 
 const base = {
   context: dir.app,
+  debug: false,
   entry: {
     app: 'app.js',
-    common: path.resolve(dir.app, 'common/common.js'),
     vendor: ['babel-polyfill'],
   },
   resolve: {
-    extensions: ['.js', '.json'],
+    alias: {},
+    extensions: ['.css', '.scss', '.js', '.json'],
     modules: [dir.app, 'node_modules'],
   },
   module: {
@@ -103,7 +104,7 @@ const base = {
     style,
     markup,
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['vendor', 'common'],
+      name: ['vendor'],
       filename: 'app/[name].min.js',
       minChunks: 2,
     }),
