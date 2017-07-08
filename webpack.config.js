@@ -22,22 +22,30 @@ const dir = {
   assets: path.resolve(__dirname, 'assets'),
   dist: path.resolve(__dirname, 'dist'),
   src: path.resolve(__dirname, 'src'),
+  app: path.resolve(__dirname, 'src/app'),
 };
 
+const markup = new Html({
+  title: pkg.title,
+  favicon: path.resolve(dir.app, 'img/favicon.ico'),
+  template: path.resolve(dir.src, 'index.html'),
+});
+
 const style = new ExtractText({
-  filename: 'css/[name].css',
+  filename: 'app/css/[name].css',
   allChunks: true,
 });
 
 const base = {
-  context: dir.src,
+  context: dir.app,
   entry: {
-    app: path.resolve(`${dir.src}`, 'app', 'app.js'),
+    app: 'app.js',
+    common: path.resolve(dir.app, 'common/common.js'),
     vendor: ['babel-polyfill'],
   },
   resolve: {
     extensions: ['.js', '.json'],
-    modules: [dir.src, 'node_modules'],
+    modules: [dir.app, 'node_modules'],
   },
   module: {
     rules: [
@@ -93,9 +101,10 @@ const base = {
   },
   plugins: [
     style,
+    markup,
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: '[name].min.js',
+      name: ['vendor', 'common'],
+      filename: 'app/[name].min.js',
       minChunks: 2,
     }),
     new webpack.LoaderOptionsPlugin({
@@ -113,11 +122,6 @@ const base = {
 const dev = {
   devtool: 'eval-source-map',
   plugins: [
-    new Html({
-      title: pkg.title,
-      favicon: path.resolve(`${dir.assets}/img/favicon.ico`),
-      template: path.resolve(__dirname, 'index.html'),
-    }),
     new Preload({
       rel: 'preload',
       as: 'script',
@@ -131,8 +135,8 @@ const prod = {
   devtool: 'source-map',
   output: {
     path: dir.dist,
-    filename: '[name].min.js',
-    sourceMapFilename: '[name].map',
+    filename: 'app/[name].min.js',
+    sourceMapFilename: 'app/[name].map',
   },
   plugins: [
     new Clean(path.resolve(dir.dist, '**', '*'), { root: dir.dist }),
