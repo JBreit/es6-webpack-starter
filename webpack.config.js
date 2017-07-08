@@ -5,9 +5,10 @@ const merge = require('webpack-merge');
 const Clean = require('clean-webpack-plugin');
 const Html = require('html-webpack-plugin');
 const ExtractText = require('extract-text-webpack-plugin');
-const PurifyCSSPlugin = require('purifycss-webpack');
+const Preload = require('preload-webpack-plugin');
+const PurifyCSS = require('purifycss-webpack');
 const autoprefixer = require('autoprefixer');
-const pkg = require('./package.json');
+const pkg = require('./package');
 
 const banner = `
   ${pkg.name} - ${pkg.description}
@@ -31,7 +32,7 @@ const style = new ExtractText({
 const base = {
   context: dir.src,
   entry: {
-    app: 'index.js',
+    app: path.resolve(`${dir.src}`, 'app', 'app.js'),
     vendor: ['babel-polyfill'],
   },
   resolve: {
@@ -103,7 +104,7 @@ const base = {
       },
     }),
     new webpack.BannerPlugin(banner),
-    new PurifyCSSPlugin({
+    new PurifyCSS({
       paths: glob.sync(path.resolve(__dirname, 'index.html')),
     }),
   ],
@@ -116,6 +117,12 @@ const dev = {
       title: pkg.title,
       favicon: path.resolve(`${dir.assets}/img/favicon.ico`),
       template: path.resolve(__dirname, 'index.html'),
+    }),
+    new Preload({
+      rel: 'preload',
+      as: 'script',
+      include: 'asyncChunks',
+      fileBlacklist: [/\.map$/]
     }),
   ],
 };
