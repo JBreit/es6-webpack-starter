@@ -1,9 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
+const glob = require('glob');
 const merge = require('webpack-merge');
 const Clean = require('clean-webpack-plugin');
 const Html = require('html-webpack-plugin');
 const ExtractText = require('extract-text-webpack-plugin');
+const PurifyCSSPlugin = require('purifycss-webpack');
 const autoprefixer = require('autoprefixer');
 const pkg = require('./package.json');
 
@@ -22,7 +24,7 @@ const dir = {
 };
 
 const style = new ExtractText({
-  filename: '[name].bundle.css',
+  filename: 'css/[name].css',
   allChunks: true,
 });
 
@@ -79,7 +81,7 @@ const base = {
         },
       },
       {
-        test: /\.(ico|png|svg|jpeg|gif)$/i,
+        test: /\.(ico|png|svg|jpeg|gif)$/,
         use: ['file-loader'],
       },
       {
@@ -92,7 +94,7 @@ const base = {
     style,
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: '[name].bundle.min.js',
+      filename: '[name].min.js',
       minChunks: 2,
     }),
     new webpack.LoaderOptionsPlugin({
@@ -101,6 +103,9 @@ const base = {
       },
     }),
     new webpack.BannerPlugin(banner),
+    new PurifyCSSPlugin({
+      paths: glob.sync(path.resolve(__dirname, 'index.html')),
+    }),
   ],
 };
 
@@ -108,6 +113,7 @@ const dev = {
   devtool: 'eval-source-map',
   plugins: [
     new Html({
+      title: pkg.title,
       favicon: path.resolve(`${dir.assets}/img/favicon.ico`),
       template: path.resolve(__dirname, 'index.html'),
     }),
@@ -118,8 +124,8 @@ const prod = {
   devtool: 'source-map',
   output: {
     path: dir.dist,
-    filename: '[name].bundle.min.js',
-    sourceMapFilename: '[name].bundle.map',
+    filename: '[name].min.js',
+    sourceMapFilename: '[name].map',
   },
   plugins: [
     new Clean(path.resolve(dir.dist, '**', '*'), { root: dir.dist }),
