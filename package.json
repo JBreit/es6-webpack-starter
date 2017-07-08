@@ -3,7 +3,7 @@
   "name": "es6-webpack-starter",
   "version": "0.1.0",
   "description": "ECMAScript 2015 Webpack Starter Kit",
-  "main": "./src/index.js",
+  "main": "./src/app/app.js",
   "private": true,
   "scripts": {
     "update-deps": "npm update",
