@@ -38,7 +38,6 @@ const style = new ExtractText({
 
 const base = {
   context: dir.app,
-  debug: false,
   entry: {
     app: 'app.js',
     vendor: ['babel-polyfill'],
